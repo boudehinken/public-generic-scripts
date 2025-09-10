@@ -1,5 +1,34 @@
 Import-Module Microsoft.Graph.Identity.SignIns
+<#
+.SYNOPSIS
+    Update Role Management Notification Settings for privileged access group roles (PAG) in Entra ID PIM.
 
+.DESCRIPTION
+    Updates the notification settings for privileged access group (PAG) roles in Entra ID PIM. 
+    It retrieves all role management policy assignments for the specified group and updates their notification rules 
+    to use the provided recipient email address. This helps ensure that notifications for eligibility and assignment 
+    events are sent to the correct recipients according to your organization's requirements.
+
+
+.PARAMETER GroupId
+    The objectID of the privileged access group for which to update role management notification settings.
+
+.PARAMETER NotificationRecipient
+    The email address to receive notifications for role management events.
+
+.PARAMETER groupdisplayname
+    The display name of the privileged access group for logging purposes.
+
+.EXAMPLE
+foreach($group in $groups) {
+    Update-paggroupManagementNotificationSettings -GroupId $group.id -NotificationRecipient "admin@example.com" -groupdisplayname $group.displayName
+}
+
+.NOTES
+Author: Bas Oudehinken
+Date : 03-09-2025
+Version: 1.0
+#>
 
 function update-paggrouprolemanagementsettings {
     param (
@@ -161,12 +190,9 @@ function update-paggrouprolemanagementsettings {
 
     foreach ($assignment in $policyassignments) {
         $policyid = $assignment.PolicyId
-        Write-Output "Updating $($assignment.RoleDefinitionId) rolesettings for Group ID: $GroupId"
+        Write-Output "Updating $($assignment.RoleDefinitionId) rolesettings for $groupdisplayname ($GroupId)"
         foreach ($rule in $notificationRulesArray) {
             Update-MgPolicyRoleManagementPolicyRule -UnifiedRoleManagementPolicyId $policyid -UnifiedRoleManagementPolicyRuleId $rule.id -BodyParameter $rule
         }
     }
 }
-
-# Example usage:
-# Update-GroupRoleManagementNotificationSettings -GroupId "objectidofgroup" -NotificationRecipient "mail@domain.com"
