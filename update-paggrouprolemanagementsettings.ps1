@@ -1,10 +1,10 @@
 Import-Module Microsoft.Graph.Identity.SignIns
 <#
 .SYNOPSIS
-    Update Role Management Notification Settings for privileged access group roles (PAG) in Entra ID PIM.
+    Update Role Management Notification Settings for privileged access groups (PAG) in Entra ID PIM.
 
 .DESCRIPTION
-    Updates the notification settings for privileged access group (PAG) roles in Entra ID PIM. 
+    Updates the notification settings for privileged access group (PAG) in Entra ID PIM. 
     It retrieves all role management policy assignments for the specified group and updates their notification rules 
     to use the provided recipient email address. This helps ensure that notifications for eligibility and assignment 
     events are sent to the correct recipients according to your organization's requirements.
